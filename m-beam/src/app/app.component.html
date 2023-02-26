@@ -1,18 +1,18 @@
-<div class="container mx-auto px-4 grow">
+<app-background-banner></app-background-banner>
+
+<div class="container mx-auto px-4 grow z-10">
   <app-navigation></app-navigation>
   <app-search></app-search>
+  <main class="mt-8 mb-8">
+    <div class="flex flex-col">
+      <div>
+        <app-movie-card></app-movie-card>
+      </div>
 
-  <main class="my-8">
-    <div>
-      <h1>Top 5 Movie 2023</h1>
-      <app-movie-card></app-movie-card>
+      <div class="mt-12">
+        <app-movie-card></app-movie-card>
+      </div>
     </div>
-
-    <div class="mt-12">
-      <h2>Top 5 Biggest Box Office Movie</h2>
-      <app-movie-card></app-movie-card>
-    </div>
-
   </main>
 </div>
 

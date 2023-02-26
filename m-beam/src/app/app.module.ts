@@ -20,6 +20,7 @@ import {MatButtonModule} from '@angular/material/button';
 import { MovieCardComponent } from './movie-card/movie-card.component';
 import {MatCardModule} from '@angular/material/card';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { BackgroundBannerComponent } from './background-banner/background-banner.component';
 
 
 
@@ -31,7 +32,8 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     NavigationComponent,
     StickyNavigationComponent,
     SearchComponent,
-    MovieCardComponent
+    MovieCardComponent,
+    BackgroundBannerComponent
   ],
   imports: [
     BrowserModule,
