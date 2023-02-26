@@ -1,0 +1,20 @@
+<form class="flex flex-col md:flex-row w-full mt-12">
+    <mat-form-field appearance="outline" class="w-12/12 md:w-8/12 md:mr-2">
+        <input matInput placeholder="What are you looking for?">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-12/12 md:w-2/12 md:mr-2">
+        <mat-select value="title">
+            <mat-option value="title">Title</mat-option>
+            <mat-option value="plot">Plot</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-12/12 md:w-2/12 md:mr-2">
+        <mat-select value="full" disabled>
+            <mat-option value="full">Full</mat-option>
+            <mat-option value="short">Short</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <button class="h-20 mr-2 icon-button-large self-end md:self-start" type="submit" mat-flat-button color="primary">Go</button>
+</form>

@@ -4,3 +4,20 @@
 @tailwind utilities;
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+@layer components {
+    button[mat-flat-button]{
+        $large-size-button: 55px;
+    
+        &.icon-button-large {
+            @apply h-14 w-14 leading-[56px];
+
+            .mat-button-ripple {
+                font-size: inherit;
+                width: inherit;
+                height: inherit;
+                line-height: inherit;
+            }
+        }   
+    }
+}

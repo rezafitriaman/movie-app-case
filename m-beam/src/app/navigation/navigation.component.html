@@ -1,0 +1,13 @@
+<nav class="flex mt-6">
+    <a class="justify-start basis-4/12 md:basis-4/12 lg:basis-7/12 xl:basis-8/12 shrink">
+        <app-logo></app-logo>
+    </a>
+    <span class="hidden sm:flex justify-end basis-8/12 md:basis-8/12 lg:basis-5/12 xl:basis-4/12">
+        <span mat-tab-nav-bar [backgroundColor]="background" [tabPanel]="tabPanel">
+            <a mat-tab-link *ngFor="let link of links"
+            (click)="activeLink = link"
+            [active]="activeLink == link"> {{link}} </a>
+        </span>
+        <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
+    </span>
+</nav>
