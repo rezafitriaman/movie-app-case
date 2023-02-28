@@ -21,6 +21,11 @@ import { MovieCardComponent } from './movie-card/movie-card.component';
 import {MatCardModule} from '@angular/material/card';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { BackgroundBannerComponent } from './background-banner/background-banner.component';
+import { SearchPageComponent } from './search-page/search-page.component';
+import { FeaturedPageComponent } from './featured-page/featured-page.component';
+import { FeaturedMovieCardComponent } from './featured-movie-card/featured-movie-card.component';
+import { DetailPageComponent } from './detail-page/detail-page.component';
+import { DetailMovieCardComponent } from './detail-movie-card/detail-movie-card.component';
 
 
 
@@ -33,7 +38,12 @@ import { BackgroundBannerComponent } from './background-banner/background-banner
     StickyNavigationComponent,
     SearchComponent,
     MovieCardComponent,
-    BackgroundBannerComponent
+    BackgroundBannerComponent,
+    SearchPageComponent,
+    FeaturedPageComponent,
+    FeaturedMovieCardComponent,
+    DetailPageComponent,
+    DetailMovieCardComponent
   ],
   imports: [
     BrowserModule,
