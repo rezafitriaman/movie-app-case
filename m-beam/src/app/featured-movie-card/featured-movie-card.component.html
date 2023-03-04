@@ -1,44 +1,32 @@
-    <h1 class="text-center">BEST HORROR OF ALL TIME</h1>
+    <h1 class="text-center">{{this.title}}</h1>
     <div class="grid grid-cols-1 gap-4 justify-center md:grid-cols-[repeat(2,_minmax(0,_325px))]">
-        <mat-card appearance="outlined" class="">
-            <img mat-card-image src="https://m.media-amazon.com/images/M/MV5BZDNjOGNhN2UtNmNhMC00YjU4LWEzMmUtNzRkM2RjN2RiMjc5XkEyXkFqcGdeQXVyMTU0OTM5ODc1._V1_SX300.jpg" alt="Photo of a Shiba Inu">
-            <mat-card-content class="mt-4">The Batman (2022) - Movie</mat-card-content>
-            <mat-card-header>
-                <mat-card-subtitle class="pb-3">Won 1 Oscar. 10 wins & 26 nominations total</mat-card-subtitle>
-                <mat-card-subtitle>
-                    A pregnant policewoman, her quarry, and an innocent delivery boy become trapped in a haunted toy warehouse.
-                </mat-card-subtitle>   
-            </mat-card-header>
-            <mat-card-footer>
-                <mat-card-actions align="end">
-                    <ul class="flex items-center">
-                        <li class="mr-1">
-                            <button>Read more</button>
-                        </li>
-                        <li><svg class="h-3 w-3 fill-slate-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M246.6 470.6c-12.5 12.5-32.8 12.5-45.3 0l-192-192c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L224 402.7 393.4 233.4c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3l-192 192zm192-384l-192 192c-12.5 12.5-32.8 12.5-45.3 0L9.4 86.6C-3.1 74.1-3.1 53.9 9.4 41.4s32.8-12.5 45.3 0L224 210.7 393.4 41.4c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3z"/></svg></li>
-                    </ul>
-                </mat-card-actions>
-            </mat-card-footer>
-        </mat-card>
-        <mat-card appearance="outlined" class="">
-            <img mat-card-image src="https://m.media-amazon.com/images/M/MV5BZDNjOGNhN2UtNmNhMC00YjU4LWEzMmUtNzRkM2RjN2RiMjc5XkEyXkFqcGdeQXVyMTU0OTM5ODc1._V1_SX300.jpg" alt="Photo of a Shiba Inu">
-            <mat-card-content class="mt-4">The Batman (2022) - Movie</mat-card-content>
-            <mat-card-header>
-                <mat-card-subtitle class="pb-3">Won 1 Oscar. 10 wins & 26 nominations total</mat-card-subtitle>
-                <mat-card-subtitle>
-                    A pregnant policewoman, her quarry, and an innocent delivery boy become trapped in a haunted toy warehouse.
-                </mat-card-subtitle>    
-            </mat-card-header>
-            <mat-card-footer>
-                <mat-card-actions align="end">
-                    <ul class="flex items-center">
-                        <li class="mr-1 underline">
-                            <button>Read more</button>
-                        </li>
-                        <li><svg class="h-3 w-3 fill-slate-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M246.6 470.6c-12.5 12.5-32.8 12.5-45.3 0l-192-192c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L224 402.7 393.4 233.4c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3l-192 192zm192-384l-192 192c-12.5 12.5-32.8 12.5-45.3 0L9.4 86.6C-3.1 74.1-3.1 53.9 9.4 41.4s32.8-12.5 45.3 0L224 210.7 393.4 41.4c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3z"/></svg></li>
-                    </ul>
-                </mat-card-actions>
-            </mat-card-footer>
-        </mat-card>    
+        <div *ngFor="let movie of featuredMovies; let i= index">
+            <mat-card appearance="outlined">
+                <img class="max-h-[30rem]" mat-card-image [src]="movie.Poster" [alt]="movie.Title">
+                <mat-card-header>
+                    <mat-card-title class="mt-4">{{movie.Title}} ({{movie.Year}}) - {{movie.Type | titlecase}}</mat-card-title>
+                    <mat-card-subtitle class="pb-3">{{movie.Awards}}</mat-card-subtitle>     
+                </mat-card-header>
+                <mat-card-content>
+                    <p>{{ movie.Plot | slice:0:this.charTruncateAfterNum }}{{ (movie.Plot.length > this.charTruncateAfterNum && !this.show[i]) ? '...' : '' }}<span *ngIf="movie.Plot.length > this.charTruncateAfterNum" [hidden]="!this.show[i]">{{ movie.Plot | slice:this.charTruncateAfterNum }}</span></p>
+                </mat-card-content>   
+                <mat-card-footer>
+                    <mat-card-actions align="end" *ngIf="movie.Plot.length > this.charTruncateAfterNum">
+                        <ul class="flex items-center">
+                            <li class="mr-1">
+                                <button mat-button class="italic underline" type="button" (click)="this.show[i] = !this.show[i]">
+                                    <span class="flex items-center">
+                                        {{ !this.show[i] ? 'Read More' : "Read Less"}}
+                                        <svg *ngIf="!this.show[i]; else isReadLess" class="w-3 h-3 ml-1 fill-slate-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M199 465c9.4 9.4 24.6 9.4 33.9 0L425 273c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-175 175L41 239c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9L199 465zM7 81L199 273c9.4 9.4 24.6 9.4 33.9 0L425 81c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-175 175L41 47C31.6 37.7 16.4 37.7 7 47S-2.3 71.6 7 81z"/></svg>
+                                        <ng-template #isReadLess>
+                                            <svg class="w-3 h-3 ml-1 fill-slate-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M233 47c-9.4-9.4-24.6-9.4-33.9 0L7 239c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l175-175L391 273c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9L233 47zM425 431L233 239c-9.4-9.4-24.6-9.4-33.9 0L7 431c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l175-175L391 465c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9z"/></svg>
+                                        </ng-template>
+                                    </span>
+                                </button>
+                            </li>
+                        </ul>
+                    </mat-card-actions>
+                </mat-card-footer>
+            </mat-card> 
+        </div>    
     </div>
-
