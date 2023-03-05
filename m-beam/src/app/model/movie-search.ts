@@ -10,4 +10,10 @@ export interface MovieSearch {
     Search: Search[];
     totalResults: string;
     Response: string;
+    Error: string;
+}
+
+export interface NotFound {
+    Response: string;
+    Error: string;
 }

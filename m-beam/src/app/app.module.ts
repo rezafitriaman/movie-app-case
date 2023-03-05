@@ -28,8 +28,6 @@ import { DetailPageComponent } from './detail-page/detail-page.component';
 import { DetailMovieCardComponent } from './detail-movie-card/detail-movie-card.component';
 
 
-
-
 @NgModule({
   declarations: [
     AppComponent,

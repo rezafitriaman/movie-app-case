@@ -15,8 +15,7 @@ export class MovieService {
     return this.http.get<MovieDetail>(`${this.omdbapiUrl}i=${id}&plot=full`)
   }
 
-  getMovieBySearch(movieTitle: string) {
-    console.log('getMovieBySearch- movieTitle', movieTitle);
+  getMovieBySearch(movieTitle: string): Observable<MovieSearch> {
     return this.http.get<MovieSearch>(`${this.omdbapiUrl}s=${movieTitle}`)
   }
 }

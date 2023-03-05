@@ -10,4 +10,5 @@ import { Search } from '../model/movie-search';
 export class MovieCardComponent {
   @Input() movies: MovieDetail[] | Search[] = [];
   @Input() title: string = '';
+  @Input() isLoading: boolean = false;
 }
