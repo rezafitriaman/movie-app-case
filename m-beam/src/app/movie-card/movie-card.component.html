@@ -1,14 +1,16 @@
-<div class="mt-12">
-    <h1>{{title}}</h1>
-    <div class="h-2">
-        <mat-progress-bar *ngIf="this.isLoading" mode="indeterminate"></mat-progress-bar>
+<div class="mt-0">
+    <h1 *ngIf="title">{{title}}</h1>
+    <div class="h-2" *ngIf="this.isLoading">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </div>
     <div class="grid grid-cols-2 sm:grid-col-3 md:grid-cols-4 lg:grid-cols-5 gap-4 lg:gap-8">
         <div *ngFor="let movie of movies">
-            <mat-card appearance="outlined" class="flex items-center justify-center">
-                <img mat-card-image [src]="movie.Poster" [alt]="movie.Title">
-                <mat-card-content class="mt-4">{{movie.Title}} ({{movie.Year}}) - {{movie.Type | titlecase}}</mat-card-content>
-            </mat-card>            
+            <a [routerLink]="['/detail', movie.imdbID]">
+                <mat-card appearance="outlined" class="flex items-center justify-center" >
+                    <img mat-card-image [src]="movie.Poster" [alt]="movie.Title">
+                    <mat-card-content class="mt-4">{{movie.Title}} ({{movie.Year}}) - {{movie.Type | titlecase}}</mat-card-content>
+                </mat-card>                
+            </a>
         </div>
     </div>
 </div>

@@ -1,0 +1,1 @@
+export type Plot = 'full' | 'short';

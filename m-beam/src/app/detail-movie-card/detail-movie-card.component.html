@@ -1,122 +1,180 @@
-<div>
-    <h1>The BatMan</h1>
-    <div class="flex gap-4 flex-col md:flex-row">
-        <div class="w-12/12 md:w-2/12">
-            <mat-card>
-                <img class="self-center" mat-card-image src="https://m.media-amazon.com/images/M/MV5BZDNjOGNhN2UtNmNhMC00YjU4LWEzMmUtNzRkM2RjN2RiMjc5XkEyXkFqcGdeQXVyMTU0OTM5ODc1._V1_SX300.jpg" alt="Photo of a Shiba Inu">
-            </mat-card>
-        </div>
-        <!-- second block -->
-        <div class="flex flex-col lg:flex-row p-4 w-12/12 md:w-10/12 bg-slate-500 ">
-            <div class="w-12/12 lg:w-10/12">
-                <span>
-                    <h2>Plot</h2>
-                    <p>
-                        Het zit de familie Wünschmann niet mee. De boekhandel leidt verlies, vader Frank is overwerkt, dochter Fee zit midden in de pubertijd en zoon Max wordt gepest. Op het moment dat ze vervloekt worden, is de maat vol.
-                        <span [hidden]="isReadMore">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Molestias tempore hic qui porro eos, obcaecati voluptate odio, veniam quos possimus tempora quas harum molestiae nihil voluptas. Quia excepturi doloremque a.</span>
-                    </p>
-                    <div class="flex justify-end mb-4">
-                        <ul class="flex items-center">
-                            <li class="mr-1">
-                                <button class="italic underline" type="button" (click)="showText()">
-                                    {{ isReadMore ? 'Read More' : "Read Less"}}
-                                </button>
-                            </li>
+<div class="mt-0">
+    <h1 *ngIf="title">{{title}}</h1>
+    <div class="h-2" *ngIf="this.isLoading">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </div>
+    <!-- detail page block -->
+    <div class="mb-5" *ngFor="let movie of moviesDetails; let i = index">
+        <div class="flex gap-4 flex-col md:flex-row">
+            <!-- first block -->
+            <ng-container *ngTemplateOutlet="firstBlockTemplate; context: { movie: movie, index: i }"></ng-container>
 
-                            <li>
-                               <button type="button" *ngIf="isReadMore; else isReadLess">
-                                    <svg (click)="showText()" class="w-3 h-3 fill-slate-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M199 465c9.4 9.4 24.6 9.4 33.9 0L425 273c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-175 175L41 239c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9L199 465zM7 81L199 273c9.4 9.4 24.6 9.4 33.9 0L425 81c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-175 175L41 47C31.6 37.7 16.4 37.7 7 47S-2.3 71.6 7 81z"/></svg>
-                               </button>
-
-                               <ng-template #isReadLess>
-                                <button>
-                                    <svg (click)="showText()" class="w-3 h-3 fill-slate-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M233 47c-9.4-9.4-24.6-9.4-33.9 0L7 239c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l175-175L391 273c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9L233 47zM425 431L233 239c-9.4-9.4-24.6-9.4-33.9 0L7 431c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l175-175L391 465c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9z"/></svg>
-                                </button>
-                               </ng-template>
-                            </li>
+            <!-- second block -->
+            <div class="flex flex-col lg:flex-row p-4 w-12/12 md:w-10/12 bg-[#424242] rounded">
+                <div class="w-12/12 lg:w-10/12">
+                    <!-- title and story -->
+                    <ng-container *ngTemplateOutlet="titleAndStoryTemplate; context: { movie: movie }"></ng-container>
+                    <span class="flex gap-4 py-4">
+                        <ul>
+                            <li>Released:</li>
+                            <li>{{movie.Released}}</li>
                         </ul>
+                        <ng-container *ngTemplateOutlet="directorTemplate; context: { movie: movie }"></ng-container>
+                        <ul>
+                            <li>Runtime:</li>
+                            <li>{{movie.Runtime}}</li>
+                        </ul>
+                        <ng-container *ngTemplateOutlet="awardTemplate; context: { movie: movie }"></ng-container>
+                    </span>
+                    <span class="flex gap-4 py-4 border-solid border-t border-slate-50 pt-4 pb-4">
+                        <ul>
+                            <li>Language:</li>
+                            <li>{{movie.Language}}</li>
+                        </ul>
+                        <ul>
+                            <li>Country:</li>
+                            <li>{{movie.Country}}</li>
+                        </ul>
+                    </span>
+                    <span class="flex gap-4 py-4 border-solid border-t border-slate-50 pt-4 pb-4">
+                        <ul>
+                            <li>DVD:</li>
+                            <li>{{movie.DVD}}</li>
+                        </ul>
+                    </span>
+                    <span>
+                        <ng-container *ngTemplateOutlet="ratedTemplate; context: { movie: movie }"></ng-container>
+                    </span>
+                    <span>
+                        <ng-container *ngTemplateOutlet="actorsTemplate; context: { movie: movie }"></ng-container>
+                    </span>
+                    <span>
+                        <ng-container *ngTemplateOutlet="genreTemplate; context: { movie: movie }"></ng-container>
+                    </span>
+                    <span>
+                        <ul class="border-solid border-t border-slate-50 pt-4 pb-4">
+                            <li>Writers:</li>
+                            <li *ngFor="let writer of this.getList(movie.Writer)">{{writer}}</li>
+                        </ul>
+                    </span>
+                    <span>
+                        <ul class="border-solid border-t border-slate-50 pt-4 pb-4">
+                            <li>BoxOffice:</li>
+                            <li>{{movie.BoxOffice}}</li>
+                        </ul>
+                    </span>  
+                </div>
+                <div class="w-12/12 lg:w-2/12">
+                    <div class="bg-[#424242] lg:p-4 flex flex-col lg:items-end">
+                        <ul class="flex mb-3" *ngFor="let rating of movie.Ratings">
+                            <li class="bg-green-600 w-12 h-12 flex items-center justify-center mr-2">
+                                <span class="text-xl">
+                                    {{this.getRatingValue(rating.Value)}}
+                                </span>
+                            </li>
+                            <li class="self-center">
+                                <img class="object-contain w-16 h-10" [src]="this.getImg(rating.Source)" [alt]="rating.Source">
+                            </li>
+                        </ul>        
                     </div>
-                </span>
-                <span class="flex gap-4 py-4">
-                    <ul>
-                         <li>Director:</li>
-                         <li>Zack Snyder</li>
-                    </ul> 
-                    <ul>
-                         <li>Runtime:</li>
-                         <li>151 min</li>
-                    </ul> 
-                    <ul>
-                         <li>Awards:</li>
-                         <li>14 wins & 31 nominations</li>
-                    </ul>
-                </span>
-                <span>
-                    <ul class="border-solid border-t border-slate-50 pt-4 pb-4">
-                         <li>Writers:</li>
-                         <li>Chris Terrio</li>
-                         <li>David S. Goyer</li>
-                         <li>Bob Kane</li>
-                    </ul>
-                </span>
-                <span>
-                    <ul class="border-solid border-t border-slate-50 pt-4 pb-4">
-                         <li>Actors:</li>
-                         <li>Ben Affleck</li>
-                         <li>Henry Cavill</li>
-                         <li>Amy Adams</li>
-                    </ul> 
-                </span>
-                <span>
-                    <ul class="border-solid border-t border-slate-50 pt-4 pb-4">
-                         <li>Genre:</li>
-                         <li>Action</li>
-                         <li>Adventure</li>
-                         <li>Sci-Fi</li>
-                    </ul>
-                </span>
-                <span>
-                    <ul class="border-solid border-t border-slate-50 pt-4 pb-4">
-                         <li>BoxOffice:</li>
-                         <li>$936,662,225</li>
-                    </ul>
-                </span>  
+                </div>
             </div>
-            <div class="w-12/12 lg:w-2/12">
-                <div class="bg-slate-500 lg:p-4 flex flex-col lg:items-end">
-                    <ul class="flex mb-3">
-                        <li class="bg-green-600 w-12 h-12 flex items-center justify-center mr-2">
-                            <span class="text-xl">
-                                6.4
-                            </span>
-                        </li>
-                        <li class="self-center">
-                            <img class="object-contain w-16 h-10" src="../assets/img/home_img.png" alt="imdb">
-                        </li>
-                    </ul>
-                    <ul class="flex mb-3">
-                        <li class="bg-green-600 w-12 h-12 flex items-center justify-center mr-2">
-                            <span class="text-xl">
-                                29%
-                            </span>
-                        </li>
-                        <li class="self-center">
-                            <img class="object-contain w-16 h-10" src="../assets/img/Group 23.png" alt="rotten-tomatoes">
-                        </li>
-                    </ul>
-                    <ul class="flex mb-3">
-                        <li class="bg-green-600 w-12 h-12 flex items-center justify-center mr-2">
-                            <span class="text-xl">
-                                44
-                            </span>
-                        </li>
-                        <li class="self-center">
-                            <img class="object-contain w-16 h-10" src="../assets/img/Group 32.png" alt="rotten-tomatoes">
-                        </li>
-                    </ul>
-        
+        </div>
+    </div>
+    <!-- search movie block -->
+    <div class="mb-5" *ngFor="let movie of moviesDetailSearch; let i = index">
+        <div class="flex gap-4 flex-col md:flex-row">
+            <!-- first block -->
+            <ng-container *ngTemplateOutlet="firstBlockTemplate; context: { movie: movie }"></ng-container>
+            <!-- second block -->
+            <div class="flex flex-col lg:flex-row p-4 w-12/12 md:w-10/12 bg-[#424242] rounded">
+                <div class="w-full">
+                    <a [routerLink]="['/detail', movie.imdbID]">
+                        <ng-container *ngTemplateOutlet="titleAndStoryTemplate; context: { movie: movie }"></ng-container>
+                        <span class="flex gap-4 py-4">
+                            <ng-container *ngTemplateOutlet="directorTemplate; context: { movie: movie }"></ng-container>
+                            <ng-container *ngTemplateOutlet="awardTemplate; context: { movie: movie }"></ng-container>
+                        </span> 
+                        <span>
+                            <ng-container *ngTemplateOutlet="ratedTemplate; context: { movie: movie }"></ng-container>
+                        </span>
+                        <span>
+                            <ng-container *ngTemplateOutlet="actorsTemplate; context: { movie: movie }"></ng-container>
+                        </span>
+                        <span>
+                            <ng-container *ngTemplateOutlet="genreTemplate; context: { movie: movie }"></ng-container>
+                        </span>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<ng-template #firstBlockTemplate let-movie="movie">
+    <div class="w-12/12 md:w-2/12">
+        <a [routerLink]="['/detail', movie.imdbID]">
+            <mat-card>
+                <img class="self-center" mat-card-image [src]="movie.Poster" [alt]="movie.Title">
+            </mat-card>    
+        </a>
+    </div>
+</ng-template>
+
+<ng-template #titleAndStoryTemplate let-movie="movie" let-i="index">
+    <span>
+        <h1>{{movie.Title}} ({{movie.Year}}) - {{movie.Type | titlecase}}</h1>
+        <h2>Story</h2>
+        <p>{{ movie.Plot | slice:0:this.charTruncateAfterNum }}{{ (movie.Plot.length > this.charTruncateAfterNum && !this.show[i]) ? '...' : '' }}<span *ngIf="movie.Plot.length > this.charTruncateAfterNum" [hidden]="!this.show[i]">{{ movie.Plot | slice:this.charTruncateAfterNum }}</span></p>
+        <div class="flex justify-end mb-4">
+            <ul class="flex items-center" *ngIf="movie.Plot.length > this.charTruncateAfterNum">
+                <li class="mr-1">
+                    <button mat-button class="italic underline" type="button" (click)="this.show[i] = !this.show[i]">
+                        <span class="flex items-center">
+                            {{ !this.show[i] ? 'Read More' : "Read Less"}}
+                            <svg *ngIf="!this.show[i]; else isReadLess" class="w-3 h-3 ml-1 fill-slate-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M199 465c9.4 9.4 24.6 9.4 33.9 0L425 273c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-175 175L41 239c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9L199 465zM7 81L199 273c9.4 9.4 24.6 9.4 33.9 0L425 81c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-175 175L41 47C31.6 37.7 16.4 37.7 7 47S-2.3 71.6 7 81z"/></svg>
+                            <ng-template #isReadLess>
+                                <svg class="w-3 h-3 ml-1 fill-slate-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M233 47c-9.4-9.4-24.6-9.4-33.9 0L7 239c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l175-175L391 273c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9L233 47zM425 431L233 239c-9.4-9.4-24.6-9.4-33.9 0L7 431c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l175-175L391 465c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9z"/></svg>
+                            </ng-template>
+                        </span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </span>
+</ng-template>
+
+<ng-template #directorTemplate let-movie="movie">
+    <ul>
+        <li>Director:</li>
+        <li>{{movie.Director}}</li>
+    </ul> 
+</ng-template>
+
+<ng-template #awardTemplate let-movie="movie">
+    <ul>
+        <li>Awards:</li>
+        <li>{{movie.Awards}}</li>
+    </ul>
+</ng-template>
+
+<ng-template #ratedTemplate let-movie="movie">
+    <ul class="border-solid border-t border-slate-50 pt-4 pb-4">
+        <li>Rated:</li>
+        <li>{{movie.Rated}}</li>
+    </ul> 
+</ng-template>
+
+<ng-template #actorsTemplate let-movie="movie">
+    <ul class="border-solid border-t border-slate-50 pt-4 pb-4">
+        <li>Actors:</li>
+        <li *ngFor="let actor of this.getList(movie.Actors)">{{actor}}</li>
+    </ul>
+</ng-template>
+
+<ng-template #genreTemplate let-movie="movie">
+    <ul class="border-solid border-t border-slate-50 pt-4 pb-4">
+        <li>Genre:</li>
+        <li *ngFor="let genre of this.getList(movie.Genre)">{{genre}}</li>
+    </ul>
+</ng-template>

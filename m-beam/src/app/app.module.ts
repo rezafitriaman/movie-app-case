@@ -26,6 +26,7 @@ import { FeaturedPageComponent } from './featured-page/featured-page.component';
 import { FeaturedMovieCardComponent } from './featured-movie-card/featured-movie-card.component';
 import { DetailPageComponent } from './detail-page/detail-page.component';
 import { DetailMovieCardComponent } from './detail-movie-card/detail-movie-card.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import { DetailMovieCardComponent } from './detail-movie-card/detail-movie-card.
     FeaturedPageComponent,
     FeaturedMovieCardComponent,
     DetailPageComponent,
-    DetailMovieCardComponent
+    DetailMovieCardComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,

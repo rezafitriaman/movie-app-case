@@ -1,5 +1,4 @@
-<main class="mt-20 mb-8">
-    <app-detail-movie-card></app-detail-movie-card>
-    <app-movie-card></app-movie-card>
+<main class="mt-5 md:mt-20 mb-8">
+    <app-detail-movie-card [moviesDetails]="moviesDetails"></app-detail-movie-card>
+    <app-movie-card [movies]="this.topMovies" [title]="this.topTitle"></app-movie-card>
 </main>
-

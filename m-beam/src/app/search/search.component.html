@@ -1,4 +1,4 @@
-<form class="flex flex-col md:flex-row w-full mt-20">
+<form class="flex flex-col md:flex-row w-full mt-5 md:mt-20">
     <mat-form-field appearance="outline" class="w-12/12 md:w-8/12 md:mr-2">
         <input matInput placeholder="What are you looking for?" [attr.aria-label]="'Search movie'" (focus)="onFocus($event)" [formControl]="search">
         <button mat-icon-button matSuffix [attr.aria-label]="'Search movie icon'">
@@ -6,17 +6,19 @@
         </button>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="w-12/12 md:w-2/12 md:mr-2">
-        <mat-select value="title">
-            <mat-option value="title">Search by Title</mat-option>
-            <mat-option value="plot">Search by Plot</mat-option>
+    <mat-form-field appearance="outline" class="w-12/12 md:w-3/12 md:mr-2">
+        <mat-select [formControl]="this.selectedSearchByOption" >
+            <mat-option *ngFor="let option of searchByOptions" [value]="option.value">
+                {{option.viewValue}}
+            </mat-option>
         </mat-select>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="w-12/12 md:w-2/12 md:mr-2">
-        <mat-select value="full" disabled>
-            <mat-option value="full">Full</mat-option>
-            <mat-option value="short">Short</mat-option>
+    <mat-form-field appearance="outline" class="w-12/12 md:w-1/12 md:mr-2">
+        <mat-select [formControl]="this.selectedPlotOption">
+            <mat-option *ngFor="let option of plotOptions" [value]="option.value">
+                {{option.viewValue}}
+            </mat-option>
         </mat-select>
     </mat-form-field>
 </form>

@@ -1,5 +1,5 @@
-<div class="absolute w-full z-0 opacity-75 after:block after:absolute after:top-0 after:left-0 after:w-full after:h-full after:bg-gradient-to-t after:from-[#303030]" [class.opacity-0]="onToggleBackgroundToBlack">
-    <picture>
+<div class="absolute w-full z-0 after:block after:absolute after:top-0 after:left-0 after:w-full after:h-full after:bg-gradient-to-t after:from-[#303030]" [ngClass]="this.onToggleBackgroundToBlack ? 'opacity-0' : 'opacity-75'">
+  <picture>
       <source srcset="https://images.pathe-thuis.nl/32148_1920x1080.jpg" media="(min-width: 1024px)" />
       <source srcset="https://images.pathe-thuis.nl/32148_1280x720.jpg" media="(min-width: 768px)" />
       <source srcset="https://images.pathe-thuis.nl/32148_970x545.jpg" media="(min-width: 640px)" />

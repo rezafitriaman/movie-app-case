@@ -1,6 +1,6 @@
     <h1 class="text-center">{{this.title}}</h1>
     <div class="grid grid-cols-1 gap-4 justify-center md:grid-cols-[repeat(2,_minmax(0,_325px))]">
-        <div *ngFor="let movie of featuredMovies; let i= index">
+        <div *ngFor="let movie of featuredMovies; let i = index">
             <mat-card appearance="outlined">
                 <img class="max-h-[30rem]" mat-card-image [src]="movie.Poster" [alt]="movie.Title">
                 <mat-card-header>
