@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { LogoComponent } from './logo/logo.component';
@@ -27,6 +27,9 @@ import { FeaturedMovieCardComponent } from './featured-movie-card/featured-movie
 import { DetailPageComponent } from './detail-page/detail-page.component';
 import { DetailMovieCardComponent } from './detail-movie-card/detail-movie-card.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { RetryInterceptor } from './services/retry.interceptor';
+import { HttpErrorInterceptor } from './services/http-error.interceptor';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 
 @NgModule({
@@ -60,8 +63,12 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     MatCardModule,
     MatProgressBarModule,
     HttpClientModule,
+    MatSnackBarModule
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: RetryInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true},
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { config } from '../config';
 import { MovieDetail } from '../model/movie-detail';
 import { MovieService } from '../services/movie.service';
-import { Subject, retry, takeUntil } from 'rxjs';
-import { MovieSearch, NotFound, Search } from '../model/movie-search';
+import { Observable, Subject, takeUntil } from 'rxjs';
+import { MovieSearch, Search } from '../model/movie-search';
 import { SearchService } from '../services/search.service';
 import { Plot } from '../model/plot';
 import { MovieDetailSearch } from '../model/movie-detail-search';
@@ -26,17 +26,18 @@ export class SearchPageComponent implements OnInit, OnDestroy{
   onSearchFieldfocus: string = '';
   isLoading: boolean = false;
   componentDestroyed$: Subject<boolean> = new Subject();
+  getMovieBySearch: Observable<MovieSearch> | Observable<MovieSearch | { Search: Observable<MovieDetailSearch[]>; totalResults: string; Response: string; Error: string}> = new Observable<MovieSearch>;
 
   constructor(private movieService: MovieService, private searchService: SearchService) {
-    this.getMovies(this.topMovieIds, this.topMovies);
-    this.getMovies(this.topGrossesId, this.topGrossesMovies);
+    this.getMoviesByIds(this.topMovieIds, this.topMovies);
+    this.getMoviesByIds(this.topGrossesId, this.topGrossesMovies);
   }
 
   ngOnInit(): void {
     this.searchService.toggleBackgroundToBlack(false);
   }
 
-  getMovies(ids: string[], movies: MovieDetail[]): void {
+  getMoviesByIds(ids: string[], movies: MovieDetail[]): void {
     ids.forEach(id => {
       this.movieService.getMovieById(id)
       .pipe(takeUntil(this.componentDestroyed$))
@@ -57,62 +58,37 @@ export class SearchPageComponent implements OnInit, OnDestroy{
 
     switch (searchInputResult.selectedSearchByOption) {
       case 'plot':
-      this.movieService.getMovieBySearchwithPlot(searchInputResult)
-        .pipe(
-          retry(3),
-          takeUntil(this.componentDestroyed$)
-        ).subscribe((result: MovieDetail[]) => {
-          console.log('object', result);
-          const responseSet = [...new Set(result.map(r => r.Response))];
-          const response = responseSet.length === 1 ? responseSet[0] : 'True';
-          this.responseFalse(response, 'Movies not found', this.searchMoviesWithPlot)
-          this.searchMovie = [];
-          const movieDetailSearchResult: MovieDetailSearch[] = result.map(m => {
-            return {
-              Poster: m.Poster,
-              Title: m.Title,
-              Type: m.Type,
-              Year: m.Year,
-              Rated: m.Rated,
-              Genre: m.Genre,
-              Director: m.Director,
-              Actors: m.Actors,
-              Plot: m.Plot,
-              Awards: m.Plot,
-              imdbID: m.imdbID
-            }
-          })
-          this.searchMoviesWithPlot = movieDetailSearchResult.slice(0, 5);
-          
-          this.isLoading = false;
-        });
-      
+        this.getMovieBySearch = this.movieService.getMovieBySearchwithPlot(searchInputResult);
         break;
       case 'title':
-      this.movieService.getMovieBySearch(searchInputResult.searchResult)
-        .pipe(
-          retry(3),
-          takeUntil(this.componentDestroyed$)
-        ).subscribe((result: MovieSearch | NotFound) => {
-          this.responseFalse(result.Response, result.Error, this.searchMovie)
-          const search = (result as MovieSearch).Search;
-
-          this.searchMoviesWithPlot = [];
-          this.searchMovie = search.slice(0, 5);
-          this.isLoading = false;
-        });  
-        break;
-      default:
+        this.getMovieBySearch = this.movieService.getMovieBySearch(searchInputResult.searchResult);
         break;
     }
+
+    this.getMovieBySearch.subscribe((result) => {
+      this.searchMovie = [];
+      this.searchMoviesWithPlot = [];
+      this.isLoading = false;
+
+      if(result.Response === 'False') {
+        this.setSearchTitle(result.Error);
+        return;
+      }
+
+      if(result.Search instanceof Observable) {
+          const movies = result.Search as Observable<MovieDetailSearch[]>;
+          movies.subscribe((movie: MovieDetailSearch[]) => this.searchMoviesWithPlot = movie.slice(0, 5));
+          return;
+      }
+
+      const search = (result as MovieSearch).Search;
+
+      this.searchMovie = search.slice(0, 5);
+    })
   }
 
-  responseFalse(response: string, responseText: string, resetMovie: Search[] | MovieDetailSearch[]): void {
-    if(response === 'False') {
-      this.searchTitle = responseText;
-      resetMovie = [];
-      return;
-    }
+  setSearchTitle(responseText: string): void {
+    this.searchTitle = responseText;
   }
 
   onClose(): void {

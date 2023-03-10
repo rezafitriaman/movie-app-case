@@ -5,9 +5,11 @@
     </div>
     <!-- detail page block -->
     <div class="mb-5" *ngFor="let movie of moviesDetails; let i = index">
-        <div class="flex gap-4 flex-col md:flex-row">
+        <div class="flex gap-4 flex-col md:flex-row" *ngIf="movie.Response === 'True'">
             <!-- first block -->
-            <ng-container *ngTemplateOutlet="firstBlockTemplate; context: { movie: movie, index: i }"></ng-container>
+            <div class="w-12/12 md:w-2/12">
+                <ng-container *ngTemplateOutlet="firstBlockTemplate; context: { movie: movie, index: i }"></ng-container>
+            </div>
 
             <!-- second block -->
             <div class="flex flex-col lg:flex-row p-4 w-12/12 md:w-10/12 bg-[#424242] rounded">
@@ -80,31 +82,34 @@
                 </div>
             </div>
         </div>
+        <div class="flex gap-4 flex-col md:flex-row" *ngIf="movie.Response === 'False'">
+            <p>Can not load movie</p>
+        </div>
     </div>
     <!-- search movie block -->
     <div class="mb-5" *ngFor="let movie of moviesDetailSearch; let i = index">
         <div class="flex gap-4 flex-col md:flex-row">
             <!-- first block -->
-            <ng-container *ngTemplateOutlet="firstBlockTemplate; context: { movie: movie }"></ng-container>
+            <a [routerLink]="['/detail', movie.imdbID]" class="transition-all ease-in-out relative bottom-0 hover:bottom-2 duration-300 w-12/12 md:w-12/12">
+                <ng-container *ngTemplateOutlet="firstBlockTemplate; context: { movie: movie }"></ng-container>
+            </a>
             <!-- second block -->
             <div class="flex flex-col lg:flex-row p-4 w-12/12 md:w-10/12 bg-[#424242] rounded">
                 <div class="w-full">
-                    <a [routerLink]="['/detail', movie.imdbID]">
-                        <ng-container *ngTemplateOutlet="titleAndStoryTemplate; context: { movie: movie }"></ng-container>
-                        <span class="flex gap-4 py-4">
-                            <ng-container *ngTemplateOutlet="directorTemplate; context: { movie: movie }"></ng-container>
-                            <ng-container *ngTemplateOutlet="awardTemplate; context: { movie: movie }"></ng-container>
-                        </span> 
-                        <span>
-                            <ng-container *ngTemplateOutlet="ratedTemplate; context: { movie: movie }"></ng-container>
-                        </span>
-                        <span>
-                            <ng-container *ngTemplateOutlet="actorsTemplate; context: { movie: movie }"></ng-container>
-                        </span>
-                        <span>
-                            <ng-container *ngTemplateOutlet="genreTemplate; context: { movie: movie }"></ng-container>
-                        </span>
-                    </a>
+                    <ng-container *ngTemplateOutlet="titleAndStoryTemplate; context: { movie: movie, index: i }"></ng-container>
+                    <span class="flex gap-4 py-4">
+                        <ng-container *ngTemplateOutlet="directorTemplate; context: { movie: movie }"></ng-container>
+                        <ng-container *ngTemplateOutlet="awardTemplate; context: { movie: movie }"></ng-container>
+                    </span> 
+                    <span>
+                        <ng-container *ngTemplateOutlet="ratedTemplate; context: { movie: movie }"></ng-container>
+                    </span>
+                    <span>
+                        <ng-container *ngTemplateOutlet="actorsTemplate; context: { movie: movie }"></ng-container>
+                    </span>
+                    <span>
+                        <ng-container *ngTemplateOutlet="genreTemplate; context: { movie: movie }"></ng-container>
+                    </span>
                 </div>
             </div>
         </div>
@@ -112,12 +117,10 @@
 </div>
 
 <ng-template #firstBlockTemplate let-movie="movie">
-    <div class="w-12/12 md:w-2/12">
-        <a [routerLink]="['/detail', movie.imdbID]">
-            <mat-card>
-                <img class="self-center" mat-card-image [src]="movie.Poster" [alt]="movie.Title">
-            </mat-card>    
-        </a>
+    <div class="w-full">
+        <mat-card>
+            <img class="self-center" mat-card-image [src]="movie.Poster" [alt]="movie.Title">
+        </mat-card>
     </div>
 </ng-template>
 

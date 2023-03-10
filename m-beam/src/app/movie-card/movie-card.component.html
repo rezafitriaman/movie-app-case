@@ -5,7 +5,7 @@
     </div>
     <div class="grid grid-cols-2 sm:grid-col-3 md:grid-cols-4 lg:grid-cols-5 gap-4 lg:gap-8">
         <div *ngFor="let movie of movies">
-            <a [routerLink]="['/detail', movie.imdbID]">
+            <a [routerLink]="['/detail', movie.imdbID]" class="transition-all ease-in-out relative bottom-0 hover:bottom-2 duration-300">
                 <mat-card appearance="outlined" class="flex items-center justify-center" >
                     <img mat-card-image [src]="movie.Poster" [alt]="movie.Title">
                     <mat-card-content class="mt-4">{{movie.Title}} ({{movie.Year}}) - {{movie.Type | titlecase}}</mat-card-content>

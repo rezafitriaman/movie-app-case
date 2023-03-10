@@ -8,7 +8,7 @@ import { Search } from '../model/movie-search';
   styleUrls: ['./movie-card.component.scss']
 })
 export class MovieCardComponent {
-  @Input() movies: MovieDetail[] | Search[] = [];
+  @Input() movies: Search[] = [];
   @Input() title: string = '';
   @Input() isLoading: boolean = false;
 }

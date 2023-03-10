@@ -12,8 +12,3 @@ export interface MovieSearch {
     Response: string;
     Error: string;
 }
-
-export interface NotFound {
-    Response: string;
-    Error: string;
-}
