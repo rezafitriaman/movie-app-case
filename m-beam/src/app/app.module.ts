@@ -29,7 +29,7 @@ import { DetailMovieCardComponent } from './detail-movie-card/detail-movie-card.
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { RetryInterceptor } from './services/retry.interceptor';
 import { HttpErrorInterceptor } from './services/http-error.interceptor';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 @NgModule({

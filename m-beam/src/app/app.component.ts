@@ -15,5 +15,4 @@ export class AppComponent implements OnInit {
       this.snackBar.showSnackBar(message);
     });
   }
-  
 }
