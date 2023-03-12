@@ -1,6 +1,6 @@
-<span [ngClass]="listMoviesIsLoaded ? 'opacity-100' : 'opacity-0'">
+<main [ngClass]="listMoviesIsLoaded ? 'opacity-100' : 'opacity-0'">
   <app-search (OnFocusEventEmit)="OnFocusEvent($event)" (searchInputResultEmit)="onSearchInput($event)"></app-search>
-  <main class="mt-0 md:mt-8 mb-8">
+  <span class="mt-0 md:mt-8 mb-8">
     <div class="flex flex-col">
       <div [hidden]="onFocusSearchField !== 'focus'" class="relative">
         <div class="mt-0">
@@ -28,5 +28,5 @@
         </div>
       </div>
     </div>
-  </main>
-</span>
+  </span>
+</main>

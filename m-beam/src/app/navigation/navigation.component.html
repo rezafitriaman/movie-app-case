@@ -3,7 +3,7 @@
         <app-logo></app-logo>
     </a>
     <span class="hidden sm:flex justify-end basis-8/12 md:basis-8/12 lg:basis-5/12 xl:basis-4/12">
-        <span mat-tab-nav-bar [backgroundColor]="background" [tabPanel]="tabPanel">
+        <span mat-tab-nav-bar [tabPanel]="tabPanel">
             <a mat-tab-link *ngFor="let link of links"
             routerLinkActive 
             #rla="routerLinkActive"

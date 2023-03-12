@@ -8,7 +8,7 @@ import { MovieService } from './services/movie.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'm-beam';
+  footerTitle = 'M-BEAM 2023';
   isLoadingRoute: boolean = false;
   
   constructor(private snackBar: SnackbarService, private movieService: MovieService) {

@@ -59,7 +59,6 @@ export class SearchPageComponent implements OnInit, OnDestroy{
         this.listMoviesIsLoaded = true;
       });
 
-
       this.movieService.isLoadingRoute.next(false);
     })
   }

@@ -43,13 +43,13 @@ export class SearchComponent implements OnInit, OnDestroy {
     );
 
     this.selectedSearchByOptionsResult = this.selectedSearchByOption.valueChanges.pipe(
-      debounceTime(500),
+      debounceTime(300),
       distinctUntilChanged()
     );
 
     this.selectedPlotOptionsResult = this.selectedPlotOption.valueChanges.pipe(
-      debounceTime(500),
-      distinctUntilChanged(),
+      debounceTime(300),
+      distinctUntilChanged()
     );
   }
 
