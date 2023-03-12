@@ -30,6 +30,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { RetryInterceptor } from './services/retry.interceptor';
 import { HttpErrorInterceptor } from './services/http-error.interceptor';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
@@ -63,11 +64,12 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatCardModule,
     MatProgressBarModule,
     HttpClientModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatIconModule
   ],
   providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: RetryInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: RetryInterceptor, multi: true},
   ],
   bootstrap: [AppComponent]
 })

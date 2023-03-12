@@ -15,7 +15,8 @@ export class HttpErrorInterceptor implements HttpInterceptor {
   constructor(private snackbar: SnackbarService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    return next.handle(request).pipe(
+    return next.handle(request)
+    .pipe(
       catchError((error: HttpErrorResponse) => {
         this.snackbar.snackbarMessage.next(error.message);
         return EMPTY;

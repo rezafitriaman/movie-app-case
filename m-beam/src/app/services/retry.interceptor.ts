@@ -5,7 +5,7 @@ import {
   HttpEvent,
   HttpInterceptor
 } from '@angular/common/http';
-import { Observable, retry } from 'rxjs';
+import { Observable, retry, timer } from 'rxjs';
 
 @Injectable()
 export class RetryInterceptor implements HttpInterceptor {
@@ -13,6 +13,12 @@ export class RetryInterceptor implements HttpInterceptor {
   constructor() {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    return next.handle(request).pipe(retry(3));
+    return next.handle(request)
+    .pipe(
+      retry({
+        count: 3,
+        delay: (_, retryCount) => timer(retryCount * 1000),
+      })
+    );
   }
 }

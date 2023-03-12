@@ -1,4 +1,11 @@
-<main class="mt-5 md:mt-20 mb-8">
-    <app-detail-movie-card [moviesDetails]="moviesDetails"></app-detail-movie-card>
-    <app-movie-card [movies]="this.topMovies" [title]="this.topTitle"></app-movie-card>
+<main class="mt-5 md:mt-20 mb-8" [ngClass]="listMoviesIsLoaded ? 'opacity-100' : 'opacity-0'">
+    <nav class="mb-3 sticky top-0 left-0 z-10">
+        <button mat-raised-button aria-label="Back button" type="button" (click)="goBack()">
+            <mat-icon>chevron_left</mat-icon>
+            Back
+        </button>    
+    </nav>
+
+    <app-detail-movie-card [moviesDetails]="movieDetail"></app-detail-movie-card>
+    <app-movie-card [movies]="firstListMovies" [title]="firstListMovieTitle"></app-movie-card>
 </main>

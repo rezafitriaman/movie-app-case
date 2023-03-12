@@ -1,5 +1,7 @@
 <app-background-banner></app-background-banner>
-
+<div class="h-2">
+  <mat-progress-bar *ngIf="isLoadingRoute" mode="indeterminate"></mat-progress-bar>
+</div>
 <div class="container mx-auto px-4 grow z-10">
   <app-navigation></app-navigation>
 

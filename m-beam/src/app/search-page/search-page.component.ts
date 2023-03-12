@@ -2,11 +2,13 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { config } from '../config';
 import { MovieDetail } from '../model/movie-detail';
 import { MovieService } from '../services/movie.service';
-import { Observable, Subject, takeUntil } from 'rxjs';
-import { MovieSearch, Search } from '../model/movie-search';
+import { Observable, Subject, map, takeUntil, timer } from 'rxjs';
+import { MovieSearch, MovieSearchPlot } from '../model/movie-search';
 import { SearchService } from '../services/search.service';
 import { Plot } from '../model/plot';
 import { MovieDetailSearch } from '../model/movie-detail-search';
+import { ActivatedRoute } from '@angular/router';
+import { Search } from '../model/search';
 
 @Component({
   selector: 'app-search-page',
@@ -14,85 +16,105 @@ import { MovieDetailSearch } from '../model/movie-detail-search';
   styleUrls: ['./search-page.component.scss']
 })
 export class SearchPageComponent implements OnInit, OnDestroy{
-  topTitle: string = config.topTitle;
-  topGrossesTitle: string = config.topGrossesTitle;
+  // titles
+  firstListMovieTitle: string = config.firstListMovies.title;
+  secondListMovieTitle: string = config.secondListMovies.title;
   searchTitle: string = 'Search results:';
-  topGrossesId: string[] = config.topGrossesId;
-  topMovieIds: string[] = config.topMovieIds;
-  topGrossesMovies: MovieDetail[] = [];
-  topMovies: MovieDetail[] = [];
-  searchMovie: Search[] = [];
-  searchMoviesWithPlot: MovieDetailSearch[] = [];
-  onSearchFieldfocus: string = '';
-  isLoading: boolean = false;
-  componentDestroyed$: Subject<boolean> = new Subject();
-  getMovieBySearch: Observable<MovieSearch> | Observable<MovieSearch | { Search: Observable<MovieDetailSearch[]>; totalResults: string; Response: string; Error: string}> = new Observable<MovieSearch>;
 
-  constructor(private movieService: MovieService, private searchService: SearchService) {
-    this.getMoviesByIds(this.topMovieIds, this.topMovies);
-    this.getMoviesByIds(this.topGrossesId, this.topGrossesMovies);
+  // count serve movie
+  countToServe: number = config.countListsToServe; 
+
+  // movies
+  firstListMovies: MovieDetail[] = [];
+  secondListMovies: MovieDetail[] = [];
+
+  // search movies
+  searchMovies: Search[] = [];
+  searchMoviesWithPlot: MovieDetailSearch[] = [];
+
+  // loading
+  listMoviesIsLoaded: boolean = false;
+  isLoadingSearchMovie: boolean = false;
+
+  // event
+  onFocusSearchField: string = '';
+
+  // observable
+  componentDestroyed$: Subject<boolean> = new Subject();
+  getMovieBySearch$: Observable<MovieSearch | MovieSearchPlot> = new Observable();
+  listsMovies$: Observable<{firstListMovies: MovieDetail[], secondListMovies: MovieDetail[]}> = new Observable();
+
+  constructor(private movieService: MovieService, private searchService: SearchService, private route: ActivatedRoute) {
+    this.listsMovies$ = this.route.data.pipe(map(data => data['movies']));
+  
+    this.listsMovies$
+    .pipe(takeUntil(this.componentDestroyed$))
+    .subscribe(({firstListMovies, secondListMovies}: {firstListMovies: MovieDetail[], secondListMovies: MovieDetail[]})=> {
+      this.firstListMovies = firstListMovies;
+      this.secondListMovies = secondListMovies;
+      
+      timer(300)
+      .pipe(takeUntil(this.componentDestroyed$))
+      .subscribe(_ => {
+        this.listMoviesIsLoaded = true;
+      });
+
+
+      this.movieService.isLoadingRoute.next(false);
+    })
   }
 
   ngOnInit(): void {
     this.searchService.toggleBackgroundToBlack(false);
   }
 
-  getMoviesByIds(ids: string[], movies: MovieDetail[]): void {
-    ids.forEach(id => {
-      this.movieService.getMovieById(id)
-      .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe(movie => movies.push(movie));  
-    });
-  }
-
   OnFocusEvent(type: 'focus'): void {
-    this.onSearchFieldfocus = type;
+    this.onFocusSearchField = type;
   }
 
   onSearchInput(searchInputResult: {searchResult: string; selectedSearchByOption: string; selectedPlotOption: Plot;}): void {
     // if search result is empty then dont send the request
     if(searchInputResult.searchResult === null || searchInputResult.searchResult === '') return;
 
-    this.isLoading = true;
+    this.isLoadingSearchMovie = true;
     this.searchTitle = `Search results: ${searchInputResult.searchResult}`;
 
+    // switch search mode
     switch (searchInputResult.selectedSearchByOption) {
       case 'plot':
-        this.getMovieBySearch = this.movieService.getMovieBySearchwithPlot(searchInputResult);
+        this.getMovieBySearch$ = this.movieService.getMovieBySearchwithPlot(searchInputResult)
         break;
       case 'title':
-        this.getMovieBySearch = this.movieService.getMovieBySearch(searchInputResult.searchResult);
+        this.getMovieBySearch$ = this.movieService.getMovieBySearch(searchInputResult.searchResult)
         break;
     }
 
-    this.getMovieBySearch.subscribe((result) => {
-      this.searchMovie = [];
+    this.getMovieBySearch$
+    .pipe(takeUntil(this.componentDestroyed$))
+    .subscribe((result) => {
+      this.searchMovies = [];
       this.searchMoviesWithPlot = [];
-      this.isLoading = false;
+      this.isLoadingSearchMovie = false;
 
       if(result.Response === 'False') {
-        this.setSearchTitle(result.Error);
+        this.searchTitle = result.Error;
         return;
       }
 
       if(result.Search instanceof Observable) {
           const movies = result.Search as Observable<MovieDetailSearch[]>;
-          movies.subscribe((movie: MovieDetailSearch[]) => this.searchMoviesWithPlot = movie.slice(0, 5));
+          movies.subscribe((movie: MovieDetailSearch[]) => this.searchMoviesWithPlot = movie.slice(0, this.countToServe));
           return;
       }
 
       const search = (result as MovieSearch).Search;
 
-      this.searchMovie = search.slice(0, 5);
+      this.searchMovies = search.slice(0, this.countToServe);
     })
   }
 
-  setSearchTitle(responseText: string): void {
-    this.searchTitle = responseText;
-  }
-
   onClose(): void {
-    this.onSearchFieldfocus = '';
+    this.onFocusSearchField = '';
     this.searchService.resetForm();
     this.searchService.toggleBackgroundToBlack(false);
   }

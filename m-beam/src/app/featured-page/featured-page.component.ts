@@ -2,8 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MovieDetail } from '../model/movie-detail';
 import { config } from '../config';
 import { MovieService } from '../services/movie.service';
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, map, takeUntil, timer } from 'rxjs';
 import { SearchService } from '../services/search.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-featured-page',
@@ -11,29 +12,42 @@ import { SearchService } from '../services/search.service';
   styleUrls: ['./featured-page.component.scss']
 })
 export class FeaturedPageComponent implements OnInit, OnDestroy{
-  featuredTitle: string = config.featuredTitle;
-  topTitle: string = config.topTitle;
-  featuredMoviesIds: Array<string> = config.featuredMoviesIds;
-  topMovieIds: Array<string> = config.topMovieIds;
+  // titles
+  featuredMovieTitle: string = config.featuredMovies.title;
+  firstListMovieTitle: string = config.firstListMovies.title;
+  
+  // movies
   featuredMovies: MovieDetail[] = [];
-  topMovies: MovieDetail[] = [];
+  firstListMovies: MovieDetail[] = [];
+
+  //observable
+  listsMovies$: Observable<{featuredMovies: MovieDetail[], firstListMovies: MovieDetail[]}> = new Observable();
   componentDestroyed$: Subject<boolean> = new Subject();
 
-  constructor(private movieService: MovieService, private searchService: SearchService) {
-    this.getMovie(this.featuredMoviesIds, this.featuredMovies);
-    this.getMovie(this.topMovieIds, this.topMovies);
+  // loading
+  listMoviesIsLoaded: boolean = false;
+
+  constructor(private movieService: MovieService, private searchService: SearchService, private route: ActivatedRoute) {
+    this.listsMovies$ = this.route.data.pipe(map(data => data['movies']));
+  
+    this.listsMovies$
+    .pipe(takeUntil(this.componentDestroyed$))
+    .subscribe(({featuredMovies, firstListMovies}: {featuredMovies: MovieDetail[], firstListMovies: MovieDetail[]})=> {
+      this.featuredMovies = featuredMovies;
+      this.firstListMovies = firstListMovies;
+
+      timer(300)
+      .pipe(takeUntil(this.componentDestroyed$))
+      .subscribe(_ => {
+        this.listMoviesIsLoaded = true;
+      });
+      
+      this.movieService.isLoadingRoute.next(false);
+    })
   }
 
   ngOnInit(): void {
     this.searchService.toggleBackgroundToBlack(false);
-  }
-
-  getMovie(ids: string[], movies: MovieDetail[]): void {
-    ids.forEach(id => {
-      this.movieService.getMovieById(id)
-      .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe(movie => movies.push(movie));  
-    });
   }
 
   ngOnDestroy(): void {

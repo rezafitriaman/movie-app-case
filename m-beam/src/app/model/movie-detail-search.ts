@@ -10,5 +10,6 @@ export interface MovieDetailSearch {
     Plot: string;
     Awards: string;
     imdbID: string;
+    Writer: string;
     Response: string;
 }

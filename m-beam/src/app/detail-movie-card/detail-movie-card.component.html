@@ -54,10 +54,7 @@
                         <ng-container *ngTemplateOutlet="genreTemplate; context: { movie: movie }"></ng-container>
                     </span>
                     <span>
-                        <ul class="border-solid border-t border-slate-50 pt-4 pb-4">
-                            <li>Writers:</li>
-                            <li *ngFor="let writer of this.getList(movie.Writer)">{{writer}}</li>
-                        </ul>
+                        <ng-container *ngTemplateOutlet="writerTemplate; context: { movie: movie }"></ng-container>
                     </span>
                     <span>
                         <ul class="border-solid border-t border-slate-50 pt-4 pb-4">
@@ -109,6 +106,9 @@
                     </span>
                     <span>
                         <ng-container *ngTemplateOutlet="genreTemplate; context: { movie: movie }"></ng-container>
+                    </span>
+                    <span>
+                        <ng-container *ngTemplateOutlet="writerTemplate; context: { movie: movie }"></ng-container>
                     </span>
                 </div>
             </div>
@@ -179,5 +179,12 @@
     <ul class="border-solid border-t border-slate-50 pt-4 pb-4">
         <li>Genre:</li>
         <li *ngFor="let genre of this.getList(movie.Genre)">{{genre}}</li>
+    </ul>
+</ng-template>
+
+<ng-template #writerTemplate let-movie="movie">
+    <ul class="border-solid border-t border-slate-50 pt-4 pb-4">
+        <li>Writers:</li>
+        <li *ngFor="let writer of this.getList(movie.Writer)">{{writer}}</li>
     </ul>
 </ng-template>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SnackbarService } from './services/snackbar.service';
+import { MovieService } from './services/movie.service';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +9,13 @@ import { SnackbarService } from './services/snackbar.service';
 })
 export class AppComponent implements OnInit {
   title = 'm-beam';
-  constructor(private snackBar: SnackbarService) {}
+  isLoadingRoute: boolean = false;
+  
+  constructor(private snackBar: SnackbarService, private movieService: MovieService) {
+    this.movieService.isLoadingRoute.subscribe(loading => {
+      this.isLoadingRoute = loading;
+    })
+  }
 
   ngOnInit(): void {
     this.snackBar.snackbarMessage.subscribe(message => {
