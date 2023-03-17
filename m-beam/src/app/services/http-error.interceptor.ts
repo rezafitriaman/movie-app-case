@@ -18,7 +18,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     return next.handle(request)
     .pipe(
       catchError((error: HttpErrorResponse) => {
-        this.snackbar.snackbarMessage.next(error.message);
+        this.snackbar.snackbarMessage.next(error.statusText);
         return EMPTY;
       })
     );

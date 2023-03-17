@@ -17,7 +17,7 @@ export class RetryInterceptor implements HttpInterceptor {
     .pipe(
       retry({
         count: 3,
-        delay: (_, retryCount) => timer(retryCount * 1000),
+        delay: (_, retryCount) => timer(retryCount * 2000),
       })
     );
   }
