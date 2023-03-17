@@ -60,7 +60,7 @@ export class MovieService implements OnDestroy {
           Search: forkJoin(moviesDetail),
           totalResults: response.totalResults,
           Response: response.Response,
-          Error: response.Error
+          Error: response.Error ? response.Error : ''
         });
       })
     )

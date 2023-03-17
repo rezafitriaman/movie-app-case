@@ -1,7 +1,7 @@
     <h1 class="text-center">{{title}}</h1>
     <div class="grid grid-cols-1 gap-4 justify-center md:grid-cols-[repeat(2,_minmax(0,_325px))]">
         <div *ngFor="let movie of featuredMovies; let i = index">
-            <mat-card appearance="outlined">
+            <mat-card appearance="outlined" *ngIf="movie.Response === 'True'">
                 <a [routerLink]="['/detail', movie.imdbID]">
                     <img class="max-h-[30rem] w-full" mat-card-image [src]="movie.Poster" [alt]="movie.Title">
                 </a>
@@ -29,6 +29,9 @@
                         </ul>
                     </mat-card-actions>
                 </mat-card-footer>
-            </mat-card> 
+            </mat-card>
+            <mat-card *ngIf="movie.Response === 'False'">
+                <p>Can not load movie</p>
+            </mat-card>
         </div>    
     </div>
