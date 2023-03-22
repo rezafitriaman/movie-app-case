@@ -4,12 +4,13 @@ import { Observable, Subject, forkJoin, map, of, switchMap, takeUntil } from 'rx
 import { HttpClient } from '@angular/common/http';
 import { MovieSearch, MovieSearchPlot } from '../model/movie-search';
 import { Plot } from '../model/plot';
+import { environment } from "../../environments/environment.demo";
 
 @Injectable({
   providedIn: 'root'
 })
 export class MovieService implements OnDestroy {
-  private omdbapiUrl = 'http://www.omdbapi.com/?apikey=6c3a2d45&';
+  private omdbapiUrl = `http://www.omdbapi.com/?apikey=${environment.API_KEY}`;
   isLoadingRoute: Subject<boolean> = new Subject();
   componentDestroyed$: Subject<boolean> = new Subject();
 
