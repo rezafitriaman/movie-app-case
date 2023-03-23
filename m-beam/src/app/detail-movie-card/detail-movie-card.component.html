@@ -4,8 +4,8 @@
         <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </div>
     <!-- detail page block -->
-    <div class="mb-5" *ngFor="let movie of moviesDetails; let i = index">
-        <div class="flex gap-4 flex-col md:flex-row" *ngIf="movie.Response === 'True'">
+    <ng-container *ngFor="let movie of moviesDetails | async; let i = index">
+        <div class="flex gap-4 flex-col md:flex-row" *ngIf="movie.Response !== 'False'; else responseFalse">
             <!-- first block -->
             <div class="w-12/12 md:w-2/12">
                 <ng-container *ngTemplateOutlet="firstBlockTemplate; context: { movie: movie, index: i }"></ng-container>
@@ -79,41 +79,55 @@
                 </div>
             </div>
         </div>
-        <div class="flex gap-4 flex-col md:flex-row" *ngIf="movie.Response === 'False'">
-            <p>Can not load movie</p>
-        </div>
+        <ng-template #responseFalse>
+            <div class="flex gap-4 flex-col md:flex-row">
+                <p>Can not load movie</p>
+            </div>
+        </ng-template>
+    </ng-container>
+    <div class="mb-5">
+
     </div>
     <!-- search movie block -->
-    <div class="mb-5" *ngFor="let movie of moviesDetailSearch; let i = index">
-        <div class="flex gap-4 flex-col md:flex-row">
-            <!-- first block -->
-            <a [routerLink]="['/detail', movie.imdbID]" class="transition-all ease-in-out relative bottom-0 hover:bottom-2 duration-300 w-12/12 md:w-12/12">
-                <ng-container *ngTemplateOutlet="firstBlockTemplate; context: { movie: movie }"></ng-container>
-            </a>
-            <!-- second block -->
-            <div class="flex flex-col lg:flex-row p-4 w-12/12 md:w-10/12 bg-[#424242] rounded">
-                <div class="w-full">
-                    <ng-container *ngTemplateOutlet="titleAndStoryTemplate; context: { movie: movie, index: i }"></ng-container>
-                    <span class="flex gap-4 py-4">
-                        <ng-container *ngTemplateOutlet="directorTemplate; context: { movie: movie }"></ng-container>
-                        <ng-container *ngTemplateOutlet="awardTemplate; context: { movie: movie }"></ng-container>
-                    </span> 
-                    <span>
-                        <ng-container *ngTemplateOutlet="ratedTemplate; context: { movie: movie }"></ng-container>
-                    </span>
-                    <span>
-                        <ng-container *ngTemplateOutlet="actorsTemplate; context: { movie: movie }"></ng-container>
-                    </span>
-                    <span>
-                        <ng-container *ngTemplateOutlet="genreTemplate; context: { movie: movie }"></ng-container>
-                    </span>
-                    <span>
-                        <ng-container *ngTemplateOutlet="writerTemplate; context: { movie: movie }"></ng-container>
-                    </span>
+    <ng-container *ngFor="let movie of moviesDetailSearch | async; let i = index">
+        <div class="mb-5" *ngIf="movie.Response !== 'False'; else responseFalse">
+            <div class="flex gap-4 flex-col md:flex-row">
+                <!-- first block -->
+                <a [routerLink]="['/detail', movie.imdbID]" class="transition-all ease-in-out relative bottom-0 hover:bottom-2 duration-300 w-12/12 md:w-12/12">
+                    <ng-container *ngTemplateOutlet="firstBlockTemplate; context: { movie: movie }"></ng-container>
+                </a>
+                <!-- second block -->
+                <div class="flex flex-col lg:flex-row p-4 w-12/12 md:w-10/12 bg-[#424242] rounded">
+                    <div class="w-full">
+                        <ng-container *ngTemplateOutlet="titleAndStoryTemplate; context: { movie: movie, index: i }"></ng-container>
+                        <span class="flex gap-4 py-4">
+                            <ng-container *ngTemplateOutlet="directorTemplate; context: { movie: movie }"></ng-container>
+                            <ng-container *ngTemplateOutlet="awardTemplate; context: { movie: movie }"></ng-container>
+                        </span> 
+                        <span>
+                            <ng-container *ngTemplateOutlet="ratedTemplate; context: { movie: movie }"></ng-container>
+                        </span>
+                        <span>
+                            <ng-container *ngTemplateOutlet="actorsTemplate; context: { movie: movie }"></ng-container>
+                        </span>
+                        <span>
+                            <ng-container *ngTemplateOutlet="genreTemplate; context: { movie: movie }"></ng-container>
+                        </span>
+                        <span>
+                            <ng-container *ngTemplateOutlet="writerTemplate; context: { movie: movie }"></ng-container>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+
+        <ng-template #responseFalse>
+            <mat-card appearance="outlined" class="flex items-center justify-center" ngif="movie.imdbID">
+                <mat-card-content class="mt-4">Sorry, {{movie.Error}}</mat-card-content>
+            </mat-card>
+        </ng-template>
+    </ng-container>
+
 </div>
 
 <ng-template #firstBlockTemplate let-movie="movie">

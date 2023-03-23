@@ -12,4 +12,5 @@ export interface MovieDetailSearch {
     imdbID: string;
     Writer: string;
     Response: string;
+    Error: string;
 }

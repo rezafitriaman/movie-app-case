@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { MovieDetail } from '../model/movie-detail';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-featured-movie-card',
@@ -7,7 +8,7 @@ import { MovieDetail } from '../model/movie-detail';
   styleUrls: ['./featured-movie-card.component.scss']
 })
 export class FeaturedMovieCardComponent implements OnChanges{
-  @Input() featuredMovies: MovieDetail[] = [];
+  @Input() featuredMovies!: Observable<MovieDetail[]>;
   @Input() title: string = '';
 
   show: {[key: string]: boolean} = {};

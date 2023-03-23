@@ -4,7 +4,7 @@ import {
   RouterStateSnapshot,
   ActivatedRouteSnapshot
 } from '@angular/router';
-import { Observable, delay, forkJoin, tap } from 'rxjs';
+import { Observable, forkJoin, tap } from 'rxjs';
 import { config } from '../config';
 import { MovieService } from '../services/movie.service';
 import { MovieDetail } from '../model/movie-detail';
@@ -29,9 +29,8 @@ export class DetailMovieResolver implements Resolve<{movieDetail: MovieDetail, f
     })
     .pipe(
       tap(() => {
-        this.movieService.isLoadingRoute.next(true);
-      }),
-      delay(100),
+        this.movieService.isLoadingRoute.next(false);
+      })
     )
   }
 }

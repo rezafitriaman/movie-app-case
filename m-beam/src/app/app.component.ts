@@ -9,7 +9,7 @@ import { MovieService } from './services/movie.service';
 })
 export class AppComponent implements OnInit {
   footerTitle = 'M-BEAM 2023';
-  isLoadingRoute: boolean = false;
+  isLoadingRoute: boolean = true;
   
   constructor(private snackBar: SnackbarService, private movieService: MovieService) {
     this.movieService.isLoadingRoute.subscribe(loading => {

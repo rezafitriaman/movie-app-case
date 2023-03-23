@@ -4,7 +4,7 @@ import {
   RouterStateSnapshot,
   ActivatedRouteSnapshot
 } from '@angular/router';
-import { Observable, delay, forkJoin, tap} from 'rxjs';
+import { Observable, forkJoin, tap} from 'rxjs';
 import { config } from '../config';
 import { MovieDetail } from '../model/movie-detail';
 import { MovieService } from '../services/movie.service';
@@ -32,10 +32,9 @@ export class SearchMovieResolver implements Resolve<{firstListMovies: MovieDetai
       secondListMovies: forkJoin(secondListMovies)
     })
     .pipe(
-      tap(() => {
-        this.movieService.isLoadingRoute.next(true);
-      }),
-      delay(100),
+      tap(_ => {
+        this.movieService.isLoadingRoute.next(false);
+      })
     )
   }
 }

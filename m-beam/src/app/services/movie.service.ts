@@ -2,9 +2,11 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { MovieDetail } from '../model/movie-detail';
 import { Observable, Subject, forkJoin, map, of, switchMap, takeUntil } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { MovieSearch, MovieSearchPlot } from '../model/movie-search';
+import { MovieSearch } from '../model/movie-search';
 import { Plot } from '../model/plot';
 import { environment } from "../../environments/environment.demo";
+import { MovieDetailSearch } from '../model/movie-detail-search';
+import { ErrorResponseMovie } from '../model/error-response-movie';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +26,7 @@ export class MovieService implements OnDestroy {
     return this.http.get<MovieSearch>(`${this.omdbapiUrl}s=${movieTitle}`);
   }
 
-  getMovieBySearchwithPlot(searchInputResult: { searchResult: string; selectedSearchByOption: string; selectedPlotOption: Plot; }): Observable<MovieSearch | MovieSearchPlot> {
+  getMovieBySearchwithPlot(searchInputResult: { searchResult: string; selectedSearchByOption: string; selectedPlotOption: Plot; }): Observable<ErrorResponseMovie | MovieDetailSearch[]> {
     return this.getMovieBySearch(searchInputResult.searchResult)
     .pipe(
       takeUntil(this.componentDestroyed$),
@@ -53,16 +55,11 @@ export class MovieService implements OnDestroy {
                 imdbID: movie.imdbID,
                 Writer: movie.Writer,
                 Response: movie.Response,
+                Error: movie.Error
             }
           }))
         });
-        
-        return of({
-          Search: forkJoin(moviesDetail),
-          totalResults: response.totalResults,
-          Response: response.Response,
-          Error: response.Error ? response.Error : ''
-        });
+        return forkJoin(moviesDetail);
       })
     )
   }

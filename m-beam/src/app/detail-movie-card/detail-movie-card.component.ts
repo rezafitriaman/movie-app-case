@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { MovieDetail } from '../model/movie-detail';
 import { MovieDetailSearch } from '../model/movie-detail-search';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-detail-movie-card',
@@ -8,8 +9,8 @@ import { MovieDetailSearch } from '../model/movie-detail-search';
   styleUrls: ['./detail-movie-card.component.scss']
 })
 export class DetailMovieCardComponent implements OnChanges{
-  @Input() moviesDetails: MovieDetail[] = [];
-  @Input() moviesDetailSearch : MovieDetailSearch[] = []; 
+  @Input() moviesDetails!: Observable<MovieDetail[]>;
+  @Input() moviesDetailSearch!: Observable<MovieDetailSearch[]>;
   @Input() isLoading: boolean = false;
   @Input() title: string = '';
 

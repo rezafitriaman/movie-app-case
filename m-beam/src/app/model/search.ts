@@ -4,4 +4,6 @@ export interface Search {
     imdbID: string;
     Type: string;
     Poster: string;
+    Response: string;
+    Error: string;
 }

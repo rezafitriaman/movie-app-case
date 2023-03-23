@@ -34,7 +34,7 @@ export class FeaturedMovieResolver implements Resolve<{featuredMovies: MovieDeta
     })
     .pipe(
       tap(() => {
-        this.movieService.isLoadingRoute.next(true);
+        this.movieService.isLoadingRoute.next(false);
       }),
       delay(100),
     )
