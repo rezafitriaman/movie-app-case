@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MovieService } from '../services/movie.service';
-import { Observable, Subject, map } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { MovieDetail } from '../model/movie-detail';
 import { config } from '../config';
 import { SearchService } from '../services/search.service';
