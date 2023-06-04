@@ -12,7 +12,7 @@ import { ErrorResponseMovie } from '../model/error-response-movie';
   providedIn: 'root'
 })
 export class MovieService implements OnDestroy {
-  private omdbapiUrl = `http://www.omdbapi.com/?apikey=${environment.API_KEY}`;
+  private omdbapiUrl = `http://www.omdbapi.com/?apikey=${environment.API_KEY}&`;
   isLoadingRoute: Subject<boolean> = new Subject();
   componentDestroyed$: Subject<boolean> = new Subject();
 
